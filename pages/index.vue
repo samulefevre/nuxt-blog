@@ -1,77 +1,52 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        nuxt-blog
-      </h1>
-      <h2 class="subtitle">
-        BLog Samuel LEFEVRE
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
-  </div>
+  <section class="mt-2 flex flex-col sm:flex-row justify-center items-center">
+    <PostPreview
+      v-for="post in posts"
+      :id="post.id"
+      :key="post.id"
+      :title="post.title"
+      :excerpt="post.previewText"
+      :thumbnail-image="post.thumbnailUrl"
+    />
+  </section>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import PostPreview from '@/components/PostPreview'
 
 export default {
   components: {
-    Logo
+    PostPreview
+  },
+  asyncData (context) {
+    const version = context.query._storyblok || context.isDev ? 'draft' : 'published'
+    return context.app.$storyapi.get('cdn/stories', {
+      version,
+      starts_with: 'blog/'
+    }).then((res) => {
+      return {
+        posts: res.data.stories.map((bp) => {
+          return {
+            id: bp.slug,
+            title: bp.content.title,
+            previewText: bp.content.summary,
+            thumbnailUrl: bp.content.thumbnail
+          }
+        })
+      }
+    })
+  },
+
+  // data () {
+  //   return {
+  //     posts: [
+  //       { title: 'mon titre', previewText: 'Preview text', thumbnailUrl: 'https://interactive-examples.mdn.mozilla.net/media/examples/grapefruit-slice-332-332.jpg', id: 'a-new-beginning' },
+  //       { title: 'mon titre2', previewText: 'Preview text2', thumbnailUrl: 'https://interactive-examples.mdn.mozilla.net/media/examples/grapefruit-slice-332-332.jpg', id: 'a-second-beginning' }
+  //     ]
+  //   }
+  // },
+  head: {
+    title: 'Home page'
   }
 }
 </script>
-
-<style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
