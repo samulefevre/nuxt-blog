@@ -36,15 +36,6 @@ export default {
       }
     })
   },
-
-  // data () {
-  //   return {
-  //     posts: [
-  //       { title: 'mon titre', previewText: 'Preview text', thumbnailUrl: 'https://interactive-examples.mdn.mozilla.net/media/examples/grapefruit-slice-332-332.jpg', id: 'a-new-beginning' },
-  //       { title: 'mon titre2', previewText: 'Preview text2', thumbnailUrl: 'https://interactive-examples.mdn.mozilla.net/media/examples/grapefruit-slice-332-332.jpg', id: 'a-second-beginning' }
-  //     ]
-  //   }
-  // },
   head: {
     title: 'Home page'
   }
