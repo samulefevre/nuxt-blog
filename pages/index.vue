@@ -12,12 +12,7 @@
 </template>
 
 <script>
-import PostPreview from '@/components/PostPreview'
-
 export default {
-  components: {
-    PostPreview
-  },
   asyncData (context) {
     const version = context.query._storyblok || context.isDev ? 'draft' : 'published'
     return context.app.$storyapi.get('cdn/stories', {
