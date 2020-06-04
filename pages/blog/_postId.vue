@@ -1,14 +1,15 @@
 <template>
-  <div v-editable="story.content">
+  <div v-editable="story.content" class="mx-auto max-w-screen-xl">
     <div :style="{backgroundImage: 'url(' + story.content.thumbnail + ')'}" class="bg-cover bg-center h-40 w-full" />
     <h1>{{ story.content.title }}</h1>
-    <p class="whitespace-pre-line">
-      {{ story.content.content }}
-    </p>
+    <div class="whitespace-pre-line" v-html="body" />
   </div>
 </template>
 
 <script>
+import marked from 'marked'
+import Prism from '~/plugins/prism'
+
 export default {
   asyncData (context) {
     const version = context.query._storyblok || context.isDev ? 'draft' : 'published'
@@ -20,12 +21,19 @@ export default {
       context.error({ statusCode: res.response.status, message: res.response.data })
     })
   },
+
   data () {
     return {
       story: { content: { content: '' } }
     }
   },
+  computed: {
+    body () {
+      return marked(this.story.content.content)
+    }
+  },
   mounted () {
+    Prism.highlightAll()
     // use the bridge to listen to events
     this.$storybridge.on(['input', 'published', 'change'], (event) => {
       if (event.action === 'input') {
@@ -45,5 +53,9 @@ export default {
 </script>
 
 <style>
+
+img {
+  @apply h-64 mx-auto;
+}
 
 </style>

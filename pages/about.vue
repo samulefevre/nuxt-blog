@@ -1,5 +1,5 @@
 <template>
-  <section v-editable="story.content" class="p-16">
+  <section v-editable="story.content" class="p-16 mx-auto max-w-screen-xl">
     <h1>{{ story.content.title }}</h1>
     <p class="whitespace-pre-line">
       {{ story.content.content }}

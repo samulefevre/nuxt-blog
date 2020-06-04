@@ -7,7 +7,9 @@ module.exports = {
   parserOptions: {
     parser: "babel-eslint"
   },
-  extends: ["@nuxtjs", "plugin:nuxt/recommended"],
+  extends: ["@nuxtjs", "plugin:nuxt/recommended", "plugin:tailwind/recommended"],
   // add your custom rules here
-  rules: {}
+  rules: {
+    "vue/no-v-html": "off"
+  }
 };

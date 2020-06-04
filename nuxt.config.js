@@ -38,16 +38,16 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~/plugins/prism'],
   /*
    ** Nuxt.js dev-modules
    */
   buildModules: [
+    '@nuxt/components',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    '@nuxt/components'
+    '@nuxtjs/eslint-module'
   ],
   /*
    ** Nuxt.js modules
@@ -65,14 +65,15 @@ export default {
         cacheProvider: 'memory'
       }
     ]
+
   ],
   generate: {
-    routes () {
+    async routes () {
       const token = process.env.STORYBLOK_PUBLIC
       const version = 'published'
       const startsWith = 'blog'
       const cv = Math.floor(Date.now() / 1e3)
-      return axios.get(`https://api.storyblok.com/v1/cdn/stories?version=${version}&token=${token}&starts_with=${startsWith}&cv=${cv}`).then(
+      return await axios.get(`https://api.storyblok.com/v1/cdn/stories?version=${version}&token=${token}&starts_with=${startsWith}&cv=${cv}`).then(
         (res) => {
           const blogPosts = res.data.stories.map(bp => bp.slug)
           return [
@@ -97,7 +98,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend (config, ctx) {}
+    extend (config, ctx) { }
   },
   components: true
 }

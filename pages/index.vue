@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-2 flex flex-col sm:flex-row justify-center items-center">
+  <section class="mt-2 flex flex-col sm:flex-row justify-center items-center mx-auto max-w-screen-xl">
     <PostPreview
       v-for="post in posts"
       :id="post.id"

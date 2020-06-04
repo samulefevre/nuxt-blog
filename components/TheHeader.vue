@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header class="mx-auto max-w-screen-xl">
     <nav class="p-16">
       <ul>
         <li>
