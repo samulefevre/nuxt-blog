@@ -8,7 +8,8 @@
 
 <script>
 import marked from 'marked'
-import Prism from '~/plugins/prism'
+import highlight from 'highlight.js'
+import 'highlight.js/styles/atom-one-dark.css'
 
 export default {
   asyncData (context) {
@@ -29,11 +30,16 @@ export default {
   },
   computed: {
     body () {
-      return marked(this.story.content.content)
+      return marked(this.story.content.content, {
+        highlight (md) {
+          return highlight.highlightAuto(md).value
+        }
+      })
     }
   },
   mounted () {
-    Prism.highlightAll()
+    // Prism.highlightAll()
+    // hljs.initHighlightingOnLoad()
     // use the bridge to listen to events
     this.$storybridge.on(['input', 'published', 'change'], (event) => {
       if (event.action === 'input') {
@@ -52,7 +58,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="css">
 
 img {
   @apply h-64 mx-auto;
